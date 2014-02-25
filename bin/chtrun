@@ -1,0 +1,108 @@
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+
+import os, sys, time
+
+home = os.path.expanduser("~")
+autCHTPath = os.path.join(home, "OpenFOAM", "python", "lib")
+sys.path.append(autCHTPath)
+
+import cht
+
+if 'FOAM_APP' in os.environ:
+    ans = True
+    while ans:
+        print """
+        1 - Create run directory
+        2 - Create regions
+        3 - Setup mesh
+        4 - Create mesh
+        5 - Split mesh
+        6 - Create MRF
+        b - Create Baffles
+        7 - Setup case
+        8 - Decompose
+        9 - Reconstruct
+        
+        m - Run mesh generation
+        s - Run simulation
+        e - Run everything
+        c - Convert to °C
+        
+        Quit with enter
+        """
+
+        ans = raw_input("Option: ")
+        if ans == "1":
+            print "Create run directory..."
+            cht.new()
+            
+        elif ans == "2":
+            print "Create regions..."
+            cht.regions()
+            
+        elif ans == "3":
+            print "Setup mesh..."
+            cht.mesh.setup()
+            
+        elif ans == "4":
+            print "Create mesh..."
+            cht.mesh.create()
+            
+        elif ans == "5":
+            print "Split mesh..."
+            cht.mesh.split()
+            
+        elif ans == "6":
+            print "Create MRF..."
+            cht.mesh.fan()
+            
+        elif ans == "7":
+            print "Setup case..."
+            cht.setup()
+            
+        elif ans == "8":
+            print "Decompose..."
+            cht.parallel.decompose()
+            
+        elif ans == "9":
+            print "Reconstruct..."
+            cht.parallel.reconstruct()
+            
+        elif ans == "b":
+            print "Create Baffles..."
+            cht.baffle()
+            
+        elif ans == "m":
+            print "Run mesh generation..."
+            cht.mesh.setup()
+            cht.mesh.create()
+            cht.mesh.split()
+            cht.mesh.fan()
+            
+        elif ans == "s":
+            print "Run simulation..."
+            cht.run()
+            
+        elif ans == "e":
+            print "Run everything..."
+            cht.new()
+            cht.regions()
+            cht.mesh.setup()
+            cht.mesh.create()
+            cht.mesh.split()
+            cht.mesh.fan()
+            cht.setup()
+            cht.run()
+            
+        elif ans == "c":
+            print "Convert to °C..."
+            cht.celsius()
+            
+        elif ans != "":
+            print "Error"
+        
+        time.sleep(.5)
+else:
+    print "\nNo OpenFOAM environment found...\n"
+

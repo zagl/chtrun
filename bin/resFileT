@@ -1,0 +1,26 @@
+#!/bin/bash
+
+runfile=/tmp/run.gp
+pltfile=/tmp/plot.gp
+
+cat >$runfile <<EOF
+replot
+pause 1
+reread
+EOF
+
+cat >$pltfile <<EOF
+set title '$1'
+set xlabel "Timesteps"
+set ylabel "Temperature"
+plot "< grep -A2 '$1' $2 | grep 'Min/max'  | awk '{print \$10 }'" with lines notitle
+plot "< grep -A2 '$1' $2 | grep 'Min/max'  | awk '{print \$19 }'" with lines notitle
+load "$runfile"
+EOF
+
+echo
+echo "Exit with Ctrl-C"
+gnuplot $pltfile
+
+test -e $runfile && rm $runfile
+test -e $pltfile && rm $pltfile

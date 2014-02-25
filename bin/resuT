@@ -1,0 +1,26 @@
+#!/bin/bash
+
+runfile=/tmp/run.gp
+pltfile=/tmp/plot.gp
+
+cat >$runfile <<EOF
+replot
+pause 1
+reread
+EOF
+
+cat >$pltfile <<EOF
+set title '$1'
+set xlabel "Timesteps"
+set ylabel "Temperature"
+set logscale y
+plot "< grep -A3 '$1' run/cht* | grep 'DICPCG'  | awk '{print \$8 }'" with lines title "Ux"
+load "$runfile"
+EOF
+
+echo
+echo "Exit with Ctrl-C"
+gnuplot $pltfile
+
+test -e $runfile && rm $runfile
+test -e $pltfile && rm $pltfilel

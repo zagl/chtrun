@@ -1,0 +1,12 @@
+#!/bin/bash
+
+
+. /home/isack/OpenFOAM/OpenFOAM-2.2.0/etc/bashrc WM_NCOMPPROCS=4 WM_MPLIB=SYSTEMOPENMPI
+
+for f in *.stl
+do
+    surfaceTransformPoints $f -scale '(.001 .001 .001)' ../$f
+done
+
+echo "Done. Exit with Enter..."
+read
